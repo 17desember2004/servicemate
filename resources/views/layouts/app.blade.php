@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#2563eb">
+
+<title>@yield('title', 'Dashboard') – ServiceMate</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f8fafc;color:#0f172a;display:flex;min-height:100vh;}
+ 
+/* SIDEBAR */
+.sidebar{
+  width:240px;flex-shrink:0;
+  background:#0f172a;
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;height:100vh;
+  z-index:100;transition:transform .3s;
+}
+.sidebar-brand{
+  display:flex;align-items:center;gap:10px;
+  padding:22px 20px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.brand-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#06b6d4);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.brand-name{font-weight:800;font-size:1.1rem;color:#fff;letter-spacing:-0.03em}
+.brand-name span{color:#38bdf8}
+ 
+.sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto;}
+.nav-label{font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:.1em;text-transform:uppercase;padding:6px 8px 4px;margin-top:8px;}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border-radius:10px;
+  color:rgba(255,255,255,0.55);text-decoration:none;
+  font-size:0.88rem;font-weight:500;
+  transition:background .2s,color .2s;
+  margin-bottom:2px;
+}
+.nav-item:hover{background:rgba(255,255,255,0.07);color:#fff;}
+.nav-item.active{background:rgba(37,99,235,0.3);color:#fff;font-weight:600;}
+.nav-item.active .nav-icon{color:#60a5fa;}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+ 
+.sidebar-footer{
+  padding:16px 20px;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+.user-info{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.9rem;flex-shrink:0;}
+.user-name{font-size:0.85rem;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-email{font-size:0.72rem;color:rgba(255,255,255,0.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.logout-btn{
+  width:100%;padding:9px;background:rgba(239,68,68,0.15);
+  border:1px solid rgba(239,68,68,0.3);color:#fca5a5;
+  border-radius:9px;font-family:inherit;font-size:0.82rem;font-weight:600;
+  cursor:pointer;transition:background .2s;
+}
+.logout-btn:hover{background:rgba(239,68,68,0.25);}
+ 
+/* MAIN CONTENT */
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;}
+ 
+/* TOPBAR */
+.topbar{
+  background:#fff;border-bottom:1px solid #e2e8f0;
+  padding:0 28px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.topbar-title{font-size:1.1rem;font-weight:700;color:#0f172a;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.notif-btn{
+  width:38px;height:38px;border-radius:50%;
+  background:#f1f5f9;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;transition:background .2s;position:relative;
+}
+.notif-btn:hover{background:#e2e8f0;}
+.notif-badge{
+  position:absolute;top:6px;right:6px;
+  width:8px;height:8px;border-radius:50%;
+  background:#ef4444;border:2px solid #fff;
+}
+ 
+/* PAGE CONTENT */
+.content{padding:28px;flex:1;}
+ 
+/* ALERT */
+.alert-success{background:#f0fdf4;border:1px solid #86efac;color:#16a34a;padding:12px 16px;border-radius:10px;font-size:0.88rem;margin-bottom:20px;}
+.alert-error-box{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:12px 16px;border-radius:10px;font-size:0.88rem;margin-bottom:20px;}
+ 
+/* CARDS */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.page-title{font-size:1.4rem;font-weight:800;color:#0f172a;letter-spacing:-0.03em;}
+.page-sub{font-size:0.88rem;color:#64748b;margin-top:3px;}
+.btn-primary{background:#2563eb;color:#fff;padding:10px 20px;border-radius:10px;font-family:inherit;font-weight:600;font-size:0.88rem;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:background .2s,transform .15s;box-shadow:0 2px 8px rgba(37,99,235,0.25);}
+.btn-primary:hover{background:#1d4ed8;transform:translateY(-1px);}
+.btn-secondary{background:#f1f5f9;color:#374151;padding:10px 18px;border-radius:10px;font-family:inherit;font-weight:600;font-size:0.88rem;border:1px solid #e2e8f0;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:background .2s;}
+.btn-secondary:hover{background:#e2e8f0;}
+.btn-danger{background:#fef2f2;color:#dc2626;padding:8px 16px;border-radius:8px;font-family:inherit;font-weight:600;font-size:0.82rem;border:1px solid #fecaca;cursor:pointer;text-decoration:none;transition:background .2s;}
+.btn-danger:hover{background:#fee2e2;}
+ 
+/* TABLE */
+.table-wrap{background:#fff;border-radius:14px;border:1px solid #e2e8f0;overflow:hidden;}
+table{width:100%;border-collapse:collapse;}
+th{padding:12px 16px;text-align:left;font-size:0.75rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.06em;background:#f8fafc;border-bottom:1px solid #e2e8f0;}
+td{padding:14px 16px;font-size:0.88rem;color:#374151;border-bottom:1px solid #f1f5f9;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafafa;}
+ 
+/* BADGE */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:50px;font-size:0.72rem;font-weight:600;}
+.badge-green{background:#dcfce7;color:#16a34a;}
+.badge-red{background:#fee2e2;color:#dc2626;}
+.badge-yellow{background:#fef9c3;color:#a16207;}
+.badge-blue{background:#dbeafe;color:#1d4ed8;}
+.badge-gray{background:#f1f5f9;color:#64748b;}
+ 
+/* FORM */
+.form-card{background:#fff;border-radius:14px;border:1px solid #e2e8f0;padding:28px;}
+.form-group{margin-bottom:20px;}
+.form-label{display:block;font-size:0.83rem;font-weight:600;color:#374151;margin-bottom:7px;}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-family:inherit;font-size:0.9rem;color:#0f172a;outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.1);}
+.form-input.error{border-color:#ef4444;}
+.form-error{color:#ef4444;font-size:0.78rem;margin-top:5px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+select.form-input{background:#fff;}
+textarea.form-input{resize:vertical;min-height:100px;}
+ 
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px;}
+.stat-card{background:#fff;border-radius:14px;padding:20px;border:1px solid #e2e8f0;}
+.stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:12px;}
+.stat-icon.blue{background:#dbeafe;}
+.stat-icon.green{background:#dcfce7;}
+.stat-icon.orange{background:#ffedd5;}
+.stat-icon.red{background:#fee2e2;}
+.stat-val{font-size:1.8rem;font-weight:800;color:#0f172a;letter-spacing:-0.04em;line-height:1;}
+.stat-lbl{font-size:0.78rem;color:#64748b;margin-top:4px;}
+ 
+/* EMPTY STATE */
+.empty{text-align:center;padding:60px 20px;}
+.empty-icon{font-size:48px;margin-bottom:16px;}
+.empty-title{font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:8px;}
+.empty-sub{font-size:0.88rem;color:#64748b;margin-bottom:20px;}
+ 
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .form-row{grid-template-columns:1fr;}
+}
+</style>
+@stack('styles')
+</head>
+<body>
+ 
+{{-- SIDEBAR --}}
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M5 11L6.5 6.5C6.8 5.6 7.6 5 8.6 5H15.4C16.4 5 17.2 5.6 17.5 6.5L19 11" stroke="white" stroke-width="1.7" stroke-linecap="round"/>
+        <rect x="2" y="11" width="20" height="7" rx="2" stroke="white" stroke-width="1.7"/>
+        <circle cx="7" cy="18" r="1.8" fill="white"/>
+        <circle cx="17" cy="18" r="1.8" fill="white"/>
+        <path d="M2 14H22" stroke="white" stroke-width="1.7"/>
+      </svg>
+    </div>
+    <span class="brand-name">Service<span>Mate</span></span>
+  </div>
+ 
+  <nav class="sidebar-nav">
+    <div class="nav-label">Menu Utama</div>
+ 
+    <a href="{{ route('dashboard') }}"
+       class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+      <span class="nav-icon">📊</span> Dashboard
+    </a>
+ 
+    <a href="{{ route('vehicles.index') }}"
+       class="nav-item {{ request()->routeIs('vehicles.*') ? 'active' : '' }}">
+      <span class="nav-icon">🚗</span> My Vehicles
+    </a>
+ 
+    <a href="{{ route('schedules.index') }}"
+       class="nav-item {{ request()->routeIs('schedules.*') ? 'active' : '' }}">
+      <span class="nav-icon">📅</span> Schedule
+    </a>
+ 
+    <a href="{{ route('reminders.index') }}"
+       class="nav-item {{ request()->routeIs('reminders.*') ? 'active' : '' }}">
+      <span class="nav-icon">🔔</span> Reminders
+    </a>
+ 
+    <a href="{{ route('histories.index') }}"
+       class="nav-item {{ request()->routeIs('histories.*') ? 'active' : '' }}">
+      <span class="nav-icon">📋</span> History
+    </a>
+ 
+    <div class="nav-label">Lainnya</div>
+ 
+    <a href="{{ route('bengkel.index') }}"
+       class="nav-item {{ request()->routeIs('bengkel.*') ? 'active' : '' }}">
+      <span class="nav-icon">📍</span> Find Bengkel
+    </a>
+ 
+    <a href="{{ route('settings') }}"
+       class="nav-item {{ request()->routeIs('settings*') ? 'active' : '' }}">
+      <span class="nav-icon">⚙️</span> Settings
+    </a>
+  </nav>
+ 
+  <div class="sidebar-footer">
+    <div class="user-info">
+      <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+      <div>
+        <div class="user-name">{{ auth()->user()->name }}</div>
+        <div class="user-email">{{ auth()->user()->email }}</div>
+      </div>
+    </div>
+    <form method="POST" action="{{ route('logout') }}">
+      @csrf
+      <button type="submit" class="logout-btn">🚪 Keluar</button>
+    </form>
+  </div>
+</aside>
+ 
+{{-- MAIN --}}
+<div class="main">
+  {{-- TOPBAR --}}
+  <header class="topbar">
+    <div class="topbar-title">@yield('title', 'Dashboard')</div>
+    <div class="topbar-right">
+      <button class="notif-btn" title="Notifikasi">
+        🔔
+        @if(isset($unreadReminders) && $unreadReminders > 0)
+          <span class="notif-badge"></span>
+        @endif
+      </button>
+      <a href="{{ url('/') }}" style="font-size:0.82rem;color:#64748b;text-decoration:none;">🏠 Beranda</a>
+    </div>
+  </header>
+ 
+  {{-- CONTENT --}}
+  <div class="content">
+    {{-- Flash messages --}}
+    @if(session('success'))
+      <div class="alert-success">✅ {{ session('success') }}</div>
+    @endif
+    @if(session('error'))
+      <div class="alert-error-box">❌ {{ session('error') }}</div>
+    @endif
+ 
+    @yield('content')
+  </div>
+</div>
+ 
+@stack('scripts')
+</body>
+</html>
