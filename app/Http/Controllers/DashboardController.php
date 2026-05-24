@@ -16,11 +16,12 @@ class DashboardController extends Controller
 
         // Reminder muncul H-7 sebelum tanggal (lebih berguna)
         $reminders = Reminder::where('user_id', $user->id)
-                        ->where('is_read', false)
-                        ->where('remind_date', '<=', Carbon::today()->addDays(7))
-                        ->orderBy('remind_date')
-                        ->limit(5)
-                        ->get();
+                            ->where('is_read', false)
+                            ->where('remind_date', '>=', Carbon::today())
+                            ->where('remind_date', '<=', Carbon::today()->addDays(3))
+                            ->orderBy('remind_date')
+                            ->limit(5)
+                            ->get();
 
         // Jadwal overdue
         $overdueSchedules = ServiceSchedule::whereHas('vehicle', function($q) use ($user) {

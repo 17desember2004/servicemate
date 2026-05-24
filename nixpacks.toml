@@ -11,6 +11,7 @@ cmds = [
     "php artisan view:cache",
     "php artisan migrate --force",
     "php artisan db:seed --class=BengkelSeeder --force"
+    "php artisan schedules:check-overdue"
 ]
 
 [start]
