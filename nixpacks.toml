@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["php82", "php82Extensions.pdo", "php82Extensions.pdo_sqlite", "php82Extensions.mbstring", "php82Extensions.tokenizer", "php82Extensions.xml", "php82Extensions.ctype", "php82Extensions.fileinfo", "php82Extensions.openssl"]
+nixPkgs = ["php82", "php82Extensions.pdo", "php82Extensions.pdo_mysql", "php82Extensions.pdo_sqlite", "php82Extensions.mbstring", "php82Extensions.tokenizer", "php82Extensions.xml", "php82Extensions.ctype", "php82Extensions.fileinfo", "php82Extensions.openssl", "php82Extensions.curl"]
 
 [phases.install]
 cmds = ["composer install --no-dev --optimize-autoloader"]
@@ -10,7 +10,7 @@ cmds = [
     "php artisan route:cache",
     "php artisan view:cache",
     "php artisan migrate --force",
-    "php artisan db:seed --class=BengkelSeeder --force"
+    "php artisan db:seed --class=BengkelSeeder --force",
     "php artisan schedules:check-overdue"
 ]
 
