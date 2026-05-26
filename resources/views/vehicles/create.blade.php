@@ -17,13 +17,13 @@
       <div class="form-group">
         <label class="form-label">Nama Kendaraan *</label>
         <input type="text" name="name" class="form-input {{ $errors->has('name') ? 'error' : '' }}"
-               value="{{ old('name') }}" placeholder="Honda Civic 2022" required>
+               value="{{ old('name') }}" placeholder="Honda Civic / Scoopy" required>
         @error('name')<div class="form-error">{{ $message }}</div>@enderror
       </div>
       <div class="form-group">
         <label class="form-label">Merek *</label>
         <input type="text" name="brand" class="form-input {{ $errors->has('brand') ? 'error' : '' }}"
-               value="{{ old('brand') }}" placeholder="Honda" required>
+               value="{{ old('brand') }}" placeholder="Honda / Toyota" required>
         @error('brand')<div class="form-error">{{ $message }}</div>@enderror
       </div>
     </div>
@@ -31,7 +31,7 @@
       <div class="form-group">
         <label class="form-label">Model *</label>
         <input type="text" name="model" class="form-input {{ $errors->has('model') ? 'error' : '' }}"
-               value="{{ old('model') }}" placeholder="Civic" required>
+               value="{{ old('model') }}" placeholder="Motor/Mobil" required>
         @error('model')<div class="form-error">{{ $message }}</div>@enderror
       </div>
       <div class="form-group">
