@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ServiceMate">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -285,7 +286,7 @@ textarea.form-input{resize:vertical;min-height:90px;}
 </div>
  
 <script>
-// PWA
+// PWA Install
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt',(e)=>{
   e.preventDefault(); deferredPrompt=e;
@@ -297,6 +298,56 @@ document.getElementById('pwa-install-btn').addEventListener('click',async()=>{
 });
 document.getElementById('pwa-dismiss-btn').addEventListener('click',()=>{
   document.getElementById('pwa-banner').style.display='none';
+});
+ 
+// Push Notifications
+const VAPID_PUBLIC_KEY = '{{ env("VAPID_PUBLIC_KEY") }}';
+ 
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+}
+ 
+async function subscribePush() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+  try {
+    const reg = await navigator.serviceWorker.register('/sw.js');
+    const permission = await Notification.requestPermission();
+    if (permission !== 'granted') return;
+ 
+    const existing = await reg.pushManager.getSubscription();
+    if (existing) return; // sudah subscribe
+ 
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+    });
+ 
+    const key = sub.getKey('p256dh');
+    const auth = sub.getKey('auth');
+ 
+    await fetch('/push/subscribe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
+      },
+      body: JSON.stringify({
+        endpoint: sub.endpoint,
+        public_key: key ? btoa(String.fromCharCode(...new Uint8Array(key))) : null,
+        auth_token: auth ? btoa(String.fromCharCode(...new Uint8Array(auth))) : null,
+      })
+    });
+  } catch(e) {
+    console.log('Push subscription error:', e);
+  }
+}
+ 
+// Jalankan subscribe setelah halaman load
+window.addEventListener('load', () => {
+  setTimeout(subscribePush, 2000);
 });
 </script>
 @stack('scripts')
