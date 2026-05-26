@@ -6,7 +6,7 @@
   <div><div class="page-title">⚙️ Settings</div><div class="page-sub">Kelola profil dan akun kamu</div></div>
 </div>
  
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;">
+<div style="display:flex;flex-direction:column;gap:20px;max-width:600px;">
  
   {{-- Update Profil --}}
   <div class="form-card">
@@ -53,15 +53,16 @@
     </form>
   </div>
  
-</div>
- 
-{{-- Info Akun --}}
-<div class="form-card" style="max-width:440px;margin-top:20px;">
-  <div style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:16px;">ℹ️ Info Akun</div>
-  <div style="display:flex;flex-direction:column;gap:10px;">
-    <div style="display:flex;justify-content:space-between;font-size:0.88rem;"><span style="color:#64748b;">Nama</span><span style="font-weight:600;">{{ $user->name }}</span></div>
-    <div style="display:flex;justify-content:space-between;font-size:0.88rem;"><span style="color:#64748b;">Email</span><span style="font-weight:600;">{{ $user->email }}</span></div>
-    <div style="display:flex;justify-content:space-between;font-size:0.88rem;"><span style="color:#64748b;">Bergabung</span><span style="font-weight:600;">{{ $user->created_at->format('d M Y') }}</span></div>
+  {{-- Info Akun --}}
+  <div class="form-card">
+    <div style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:16px;">ℹ️ Info Akun</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="display:flex;justify-content:space-between;font-size:0.88rem;"><span style="color:#64748b;">Nama</span><span style="font-weight:600;">{{ $user->name }}</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.88rem;"><span style="color:#64748b;">Email</span><span style="font-weight:600;">{{ $user->email }}</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.88rem;"><span style="color:#64748b;">Bergabung</span><span style="font-weight:600;">{{ $user->created_at->format('d M Y') }}</span></div>
+    </div>
   </div>
+ 
 </div>
 @endsection
+

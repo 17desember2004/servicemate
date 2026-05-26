@@ -22,9 +22,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f8fafc;color:#0f172a
   z-index:200;
   /* NO transform — always visible on all screens */
 }
-.sidebar-brand{display:flex;align-items:center;gap:10px;padding:22px 20px;border-bottom:1px solid rgba(255,255,255,0.08);}
-.brand-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#06b6d4);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.brand-name{font-weight:800;font-size:1.1rem;color:#fff;letter-spacing:-0.03em}
+.sidebar-brand{display:flex;align-items:center;gap:10px;padding:18px 16px;border-bottom:1px solid rgba(255,255,255,0.08);min-height:64px;}
+.brand-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#06b6d4);display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;}
+.brand-name{font-weight:800;font-size:1.1rem;color:#fff;letter-spacing:-0.03em;line-height:1;}
 .brand-name span{color:#38bdf8}
 .sidebar-nav{flex:1;padding:16px 12px;overflow-y:auto;}
 .nav-label{font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:.1em;text-transform:uppercase;padding:6px 8px 4px;margin-top:8px;}
@@ -174,6 +174,15 @@ textarea.form-input{resize:vertical;min-height:90px;}
  
   /* PWA banner */
   #pwa-banner{left:70px;right:16px;max-width:none;bottom:16px;}
+ 
+  /* Sidebar footer — sembunyikan teks, tampilkan ikon saja */
+  .sidebar-footer{padding:8px 6px;}
+  .user-info{flex-direction:column;align-items:center;gap:4px;margin-bottom:8px;}
+  .user-name,.user-email{display:none;}
+  .user-avatar{margin:0 auto;}
+  /* Logout: hanya ikon 🚪 */
+  .logout-btn{padding:7px 0;font-size:0;border-radius:8px;}
+  .logout-btn::before{content:'🚪';font-size:16px;}
 }
  
 /* Layar sangat kecil — sidebar icon lebih kecil */

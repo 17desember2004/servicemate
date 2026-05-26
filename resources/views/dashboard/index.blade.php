@@ -34,21 +34,22 @@
   </div>
 </div>
  
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+{{-- Grid: Kendaraan + Reminder --}}
+<div class="dash-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
  
   {{-- Kendaraan --}}
   <div>
     <div style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:14px;">🚗 Kendaraanmu</div>
     @forelse($vehicles as $v)
-      <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:18px;margin-bottom:12px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
           <span style="font-weight:700;font-size:0.95rem;">{{ $v->name }}</span>
           <span class="badge {{ $v->status=='active' ? 'badge-green' : 'badge-gray' }}">
             {{ $v->status=='active' ? 'Aktif' : 'Nonaktif' }}
           </span>
         </div>
-        <div style="font-size:0.8rem;color:#64748b;">{{ $v->plate_number }} · {{ number_format($v->current_km) }} km</div>
-        <div style="margin-top:10px;display:flex;gap:8px;">
+        <div style="font-size:0.8rem;color:#64748b;margin-bottom:10px;">{{ $v->plate_number }} · {{ number_format($v->current_km) }} km</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <a href="{{ route('vehicles.show', $v) }}" class="btn-secondary" style="font-size:0.78rem;padding:6px 12px;">Detail</a>
           <a href="{{ route('schedules.create') }}?vehicle_id={{ $v->id }}" class="btn-primary" style="font-size:0.78rem;padding:6px 12px;">+ Jadwal</a>
         </div>
@@ -67,15 +68,15 @@
   <div>
     <div style="font-size:1rem;font-weight:700;color:#0f172a;margin-bottom:14px;">🔔 Reminder Terdekat</div>
     @forelse($reminders as $r)
-      <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;">
-        <div style="width:10px;height:10px;border-radius:50%;flex-shrink:0;background:{{ $r->priority=='high' ? '#ef4444' : ($r->priority=='medium' ? '#f59e0b' : '#22c55e') }};box-shadow:0 0 6px {{ $r->priority=='high' ? '#ef444480' : ($r->priority=='medium' ? '#f59e0b80' : '#22c55e80') }}"></div>
-        <div style="flex:1;">
-          <div style="font-size:0.88rem;font-weight:600;color:#0f172a;">{{ $r->title }}</div>
-          <div style="font-size:0.75rem;color:#64748b;">{{ $r->vehicle->name ?? '-' }} · {{ \Carbon\Carbon::parse($r->remind_date)->diffForHumans() }}</div>
+      <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;">
+        <div style="width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px;background:{{ $r->priority=='high' ? '#ef4444' : ($r->priority=='medium' ? '#f59e0b' : '#22c55e') }};box-shadow:0 0 6px {{ $r->priority=='high' ? '#ef444480' : ($r->priority=='medium' ? '#f59e0b80' : '#22c55e80') }}"></div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:0.85rem;font-weight:600;color:#0f172a;word-break:break-word;">{{ $r->title }}</div>
+          <div style="font-size:0.75rem;color:#64748b;margin-top:2px;">{{ $r->vehicle->name ?? '-' }} · {{ \Carbon\Carbon::parse($r->remind_date)->diffForHumans() }}</div>
         </div>
-        <form method="POST" action="{{ route('reminders.read', $r->id) }}">
+        <form method="POST" action="{{ route('reminders.read', $r->id) }}" style="flex-shrink:0;">
           @csrf @method('PATCH')
-          <button type="submit" style="background:none;border:none;cursor:pointer;font-size:0.75rem;color:#2563eb;font-weight:600;">✓ Baca</button>
+          <button type="submit" style="background:none;border:none;cursor:pointer;font-size:0.75rem;color:#2563eb;font-weight:600;white-space:nowrap;">✓ Baca</button>
         </form>
       </div>
     @empty
@@ -89,4 +90,14 @@
   </div>
  
 </div>
+ 
+@push('styles')
+<style>
+  @media(max-width:768px){
+    .dash-grid{
+      grid-template-columns:1fr !important;
+    }
+  }
+</style>
+@endpush
 @endsection
