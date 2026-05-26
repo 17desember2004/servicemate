@@ -1,5 +1,5 @@
 <?php
-
+ 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -10,17 +10,18 @@ use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\BengkelController;
 use App\Http\Controllers\SettingController;
-
+use App\Http\Controllers\PushController;
+ 
 // Landing Page
 Route::get('/', fn() => view('landing'));
-
+ 
 // Auth
 Route::get('/login', [LoginController::class, 'showForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'showForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
+ 
 // Protected (harus login)
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -34,4 +35,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings', [SettingController::class, 'index'])->name('settings');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
     Route::put('/settings/password', [SettingController::class, 'updatePassword'])->name('settings.password');
+    Route::post('/push/subscribe', [PushController::class, 'subscribe'])->name('push.subscribe');
+    Route::post('/push/unsubscribe', [PushController::class, 'unsubscribe'])->name('push.unsubscribe');
 });
