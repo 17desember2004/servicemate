@@ -56,7 +56,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f8fafc;color:#0f172a
 .alert-error-box{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;padding:12px 16px;border-radius:10px;font-size:0.88rem;margin-bottom:20px;}
  
 /* ═══ PAGE ═══ */
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap;}
 .page-title{font-size:1.3rem;font-weight:800;color:#0f172a;letter-spacing:-0.03em;}
 .page-sub{font-size:0.85rem;color:#64748b;margin-top:3px;}
  
@@ -302,3 +302,4 @@ document.getElementById('pwa-dismiss-btn').addEventListener('click',()=>{
 @stack('scripts')
 </body>
 </html>
+
