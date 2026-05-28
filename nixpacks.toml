@@ -9,5 +9,5 @@ cmds = [
 ]
  
 [start]
-cmd = "php artisan migrate --force && php artisan db:seed --class=BengkelSeeder --force && php artisan schedules:check-overdue && php artisan serve --host=0.0.0.0 --port=${PORT}"
+cmd = "php artisan migrate --force && php artisan db:seed --class=BengkelSeeder --force && php artisan schedules:check-overdue && (while true; do php artisan schedule:run; sleep 60; done &) && php artisan serve --host=0.0.0.0 --port=${PORT}"
  
