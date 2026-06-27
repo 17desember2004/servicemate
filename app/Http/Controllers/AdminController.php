@@ -3,10 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+    private function getContent()
+    {
+        $settings = DB::table('settings')->pluck('value', 'key')->toArray();
+        return $settings;
+    }
+
+    private function saveContent(array $data)
+    {
+        foreach ($data as $key => $value) {
+            DB::table('settings')->upsert(
+                ['key' => $key, 'value' => $value],
+                ['key'],
+                ['value']
+            );
+        }
+    }
+
     public function index()
     {
         return view('admin.dashboard');
@@ -14,13 +31,13 @@ class AdminController extends Controller
 
     public function landing()
     {
-        $content = json_decode(Storage::get('landing_content.json') ?? '{}', true) ?? [];
+        $content = $this->getContent();
         return view('admin.landing', compact('content'));
     }
 
     public function updateLanding(Request $request)
     {
-        $content = [
+        $data = [
             'hero_badge'    => $request->hero_badge,
             'hero_title'    => $request->hero_title,
             'hero_subtitle' => $request->hero_subtitle,
@@ -39,7 +56,7 @@ class AdminController extends Controller
             'testimoni_3'   => $request->testimoni_3,
         ];
 
-        Storage::put('landing_content.json', json_encode($content));
+        $this->saveContent($data);
 
         return redirect()->route('admin.landing')->with('success', '✅ Landing page berhasil diupdate!');
     }
