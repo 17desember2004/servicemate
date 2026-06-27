@@ -520,7 +520,7 @@ footer{background:#0f172a;padding:80px 5% 40px;color:rgba(255,255,255,0.5)}
         <li><a href="#">Blog</a></li>
         <li><a href="#">Careers</a></li>
         <li><a href="#">Contact</a></li>
-        <li><a href="#">nuricahyono</a></li>
+        <li><a href="#">Rita Rani</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -537,7 +537,7 @@ footer{background:#0f172a;padding:80px 5% 40px;color:rgba(255,255,255,0.5)}
   </div>
   <div class="footer-divider"></div>
   <div class="footer-bottom">
-    <span class="footer-copy">© {{ date('Y') }} ServiceMate · nuricahyono · DIGBISSS Project · Made with ❤️ for Indonesia 🇮🇩</span>
+    <span class="footer-copy">© {{ date('Y') }} ServiceMate</span>
     <div class="footer-links-bottom">
       <a href="#">Privacy</a>
       <a href="#">Terms</a>
