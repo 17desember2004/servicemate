@@ -1,3 +1,6 @@
+@php
+    $content = json_decode(\Illuminate\Support\Facades\Storage::get('landing_content.json') ?? '{}', true) ?? [];
+@endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -280,10 +283,10 @@ footer{background:#0f172a;padding:80px 5% 40px;color:rgba(255,255,255,0.5)}
   <div class="hero-glow"></div>
   <div class="hero-badge">
     <span class="hero-badge-dot"></span>
-    Never miss a service again
+    {{ $content['hero_badge'] ?? 'Never miss a service again' }}
   </div>
-  <h1>Keep Your Vehicle<br>Running <span class="accent">Smoothly</span></h1>
-  <p class="hero-sub">ServiceMate mengingatkan jadwal servis berdasarkan waktu & kilometer, memberi notifikasi pintar, dan menganalisis kondisi kendaraan dari gejala yang kamu rasakan.</p>
+  <h1>{{ $content['hero_title'] ?? 'Keep Your Vehicle Running Smoothly' }}</h1>
+  <p class="hero-sub">{{ $content['hero_subtitle'] ?? 'ServiceMate mengingatkan jadwal servis berdasarkan waktu & kilometer.' }}</p>
   <div class="hero-btns">
     {{-- Tombol utama → ke register --}}
     <a href="{{ route('register') }}" class="btn-blue">Start Free Trial &nbsp;→</a>
@@ -537,7 +540,7 @@ footer{background:#0f172a;padding:80px 5% 40px;color:rgba(255,255,255,0.5)}
   </div>
   <div class="footer-divider"></div>
   <div class="footer-bottom">
-    <span class="footer-copy">© {{ date('Y') }} ServiceMate</span>
+  <span class="footer-copy">{{ $content['footer_text'] ?? '© ' . date('Y') . ' ServiceMate · Made with ❤️ for Indonesia' }}</span>
     <div class="footer-links-bottom">
       <a href="#">Privacy</a>
       <a href="#">Terms</a>

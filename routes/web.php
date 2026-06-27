@@ -11,6 +11,7 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\BengkelController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\PushController;
+use App\Http\Controllers\AdminController;
  
 // Landing Page
 Route::get('/', fn() => view('landing'));
@@ -37,4 +38,11 @@ Route::middleware('auth')->group(function () {
     Route::put('/settings/password', [SettingController::class, 'updatePassword'])->name('settings.password');
     Route::post('/push/subscribe', [PushController::class, 'subscribe'])->name('push.subscribe');
     Route::post('/push/unsubscribe', [PushController::class, 'unsubscribe'])->name('push.unsubscribe');
+});
+
+// Admin Routes
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/landing', [AdminController::class, 'landing'])->name('admin.landing');
+    Route::post('/landing', [AdminController::class, 'updateLanding'])->name('admin.landing.update');
 });
