@@ -1,5 +1,5 @@
 @php
-    $content = json_decode(\Illuminate\Support\Facades\Storage::get('landing_content.json') ?? '{}', true) ?? [];
+    $content = \Illuminate\Support\Facades\DB::table('settings')->pluck('value', 'key')->toArray();
 @endphp
 <!DOCTYPE html>
 <html lang="id">
